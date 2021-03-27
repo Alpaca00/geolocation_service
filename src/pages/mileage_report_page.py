@@ -1,15 +1,73 @@
+from selene.core.wait import Wait
 from selene.support import by
+from selene.support.conditions.be import visible
+from selene.support.shared import config
 from selene.support.shared.jquery_style import s
+from selene.api import *
+from app.handling_data import MileageCollection
+from new_objects.support import DownloadPending
 
 
 class MileageReportPageLocators:
-    LOGO = "//*[@id='ext-element-11']"
+    LOGO = "//span[@class='x-tree-node-text ']"
+    RADIO_BTN_CONFIRM_OBJECT = "//div[@class=' x-tree-checkbox']"
+    GENERATE_DATA = "//span[@id='rep_button-btnInnerEl']"
+    FRAME_REPORT_TITLE = "//div[@id='pagetitle']"
+    REPORT_TABLE = "//div[@id='repcontainer']//tr/td"
+
+    CSV_FILE = "//input[@id='ibtCsv']"
 
 
 class MileageReportPage(MileageReportPageLocators):
 
     def __init__(self):
         super(MileageReportPage).__init__()
+        self.driver = config.driver
+        self.mileage_collection = MileageCollection()
 
     def logo_text(self):
+        main_window = self.driver.current_window_handle
+        self.window_handling(main_window)
         return s(by.xpath(self.LOGO))
+
+    def window_handling(self, tab):
+        for id in self.driver.window_handles:
+            if id != tab:
+                self.driver.switch_to.window(id)
+                break
+        return self
+
+    def switch_on_report_window(self):
+        main_tab = self.driver.current_window_handle
+        self.window_handling(main_tab)
+        s(by.xpath(self.RADIO_BTN_CONFIRM_OBJECT)).click()
+        s(by.xpath(self.GENERATE_DATA)).click()
+        ss(by.xpath(self.REPORT_TABLE)).should(be.visible, timeout=5)
+        self.driver.switch_to.frame(self.driver.find_element_by_tag_name("iframe"))
+        return s(by.xpath(self.FRAME_REPORT_TITLE))
+
+    def insert_data_to_collection(self):
+        tab = self.driver.current_window_handle
+        self.window_handling(tab)
+        self.driver.find_element_by_xpath(self.RADIO_BTN_CONFIRM_OBJECT).click()
+        self.driver.find_element_by_xpath(self.GENERATE_DATA).click()
+        ss(by.xpath(self.REPORT_TABLE)).should(be.visible, timeout=5)
+        self.driver.switch_to.frame(self.driver.find_element_by_tag_name("iframe"))
+        rows = ss(by.xpath(self.REPORT_TABLE))
+        arr = []
+        for row in rows:
+            elem = row.get(query.text)
+            arr.append(elem)
+        self.mileage_collection.insert_to_collection(arr)
+        return self
+
+    def save_report_to_file(self):
+        tab = self.driver.current_window_handle
+        self.window_handling(tab)
+        self.driver.find_element_by_xpath(self.RADIO_BTN_CONFIRM_OBJECT).click()
+        self.driver.find_element_by_xpath(self.GENERATE_DATA).click()
+        ss(by.xpath(self.REPORT_TABLE)).should(be.visible, timeout=5)
+        self.driver.switch_to.frame(self.driver.find_element_by_tag_name("iframe"))
+        s(by.xpath(self.CSV_FILE)).click()
+        DownloadPending(self.driver, timeout=3, rename=True)
+

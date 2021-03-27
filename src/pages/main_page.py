@@ -34,7 +34,7 @@ class MainPage(MainPageLocators):
     def go_to_car_mileage_data(self):
         s(by.xpath(self.REPORT_PERIOD_BTN)).click().wait_until(s(self.WEEK_PERIOD_SELECT).click())
         s(by.xpath(self.CASCADING_MENU_BTN)).click()
-        s(by.xpath(self.REPORTS)).context_click()
-        s(by.xpath(self.RIDES_REPORT)).context_click()
+        s(by.xpath(self.REPORTS)).double_click()
+        s(by.xpath(self.RIDES_REPORT)).double_click()
         s(by.xpath(self.MILEAGE)).click()
-        return MileageReportPage()
+        return MileageReportPage
