@@ -22,3 +22,4 @@ webdriver-manager==3.3.0
 bson==0.5.10
 allure-pytest==2.8.40
 configparser==5.0.2
+humanize==3.3.0

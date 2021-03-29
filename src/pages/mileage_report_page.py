@@ -26,29 +26,29 @@ class MileageReportPage(MileageReportPageLocators):
         self.mileage_collection = MileageCollection()
 
     def logo_text(self):
-        main_window = self.driver.current_window_handle
-        self.window_handling(main_window)
+        main_tab = self.driver.current_window_handle
+        self.tab_analyzer(main_tab)
         return s(by.xpath(self.LOGO))
 
-    def window_handling(self, tab):
+    def tab_analyzer(self, tab):
         for id in self.driver.window_handles:
             if id != tab:
                 self.driver.switch_to.window(id)
                 break
         return self
 
-    def switch_on_report_window(self):
+    def switch_on_report_tab(self):
         main_tab = self.driver.current_window_handle
-        self.window_handling(main_tab)
+        self.tab_analyzer(main_tab)
         s(by.xpath(self.RADIO_BTN_CONFIRM_OBJECT)).click()
         s(by.xpath(self.GENERATE_DATA)).click()
         ss(by.xpath(self.REPORT_TABLE)).should(be.visible, timeout=5)
         self.driver.switch_to.frame(self.driver.find_element_by_tag_name("iframe"))
         return s(by.xpath(self.FRAME_REPORT_TITLE))
 
-    def insert_data_to_collection(self):
+    def insert_data_to_mileage_collection(self):
         tab = self.driver.current_window_handle
-        self.window_handling(tab)
+        self.tab_analyzer(tab)
         self.driver.find_element_by_xpath(self.RADIO_BTN_CONFIRM_OBJECT).click()
         self.driver.find_element_by_xpath(self.GENERATE_DATA).click()
         ss(by.xpath(self.REPORT_TABLE)).should(be.visible, timeout=5)
@@ -63,7 +63,7 @@ class MileageReportPage(MileageReportPageLocators):
 
     def save_report_to_file(self):
         tab = self.driver.current_window_handle
-        self.window_handling(tab)
+        self.tab_analyzer(tab)
         self.driver.find_element_by_xpath(self.RADIO_BTN_CONFIRM_OBJECT).click()
         self.driver.find_element_by_xpath(self.GENERATE_DATA).click()
         ss(by.xpath(self.REPORT_TABLE)).should(be.visible, timeout=5)

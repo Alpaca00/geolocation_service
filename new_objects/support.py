@@ -11,7 +11,7 @@ class OsDownloadsFolderError(Exception):
 
 class DownloadPending:
     # todo: consider using DownloadPending object under certain conditions ... if you need expect full download or rename the file
-    # todo: ... root downloads folder should be "/downloads"
+    # ... root downloads folder should be "/downloads"
     def __init__(self, driver, timeout: int, rename: bool):
         self.driver = driver
         self._check_download(timeout)
@@ -38,7 +38,7 @@ class DownloadPending:
             # timeout = float(time_load[-7:-3]) + 3
             time.sleep(timeout)
 
-    # todo: file is stored in the working directory
+    #  file is stored in the working directory
     def _rename_download_file(self, rename: bool):
         import os
         import pathlib
@@ -48,7 +48,7 @@ class DownloadPending:
             if self.driver.current_url.startswith("chrome://downloads") and rename:
                 file_name_download = self.driver.execute_script("""return document.querySelector("body > downloads-manager")
                 .shadowRoot.querySelector("#frb0").shadowRoot.querySelector("#name").innerText;""")
-                file = os.path.join(os.path.expanduser('~') + "/Downloads/" + str(file_name_download))  # you can change this name folder if you have a different name;)
+                file = os.path.join(os.path.expanduser('~') + "/Downloads/" + str(file_name_download))  # check name folder if you have a different name - change
                 serial_number = datetime.now().strftime("%H_%M_%S")
                 while os.path.isfile(file):
                     if not os.path.isfile(file):
