@@ -1,3 +1,4 @@
+import allure
 from selene import by, query
 from selene.support.shared.jquery_style import s
 from src.domain.user import collection_admin
@@ -20,10 +21,11 @@ class MainPage(MainPageLocators):
     def __init__(self):
         super(MainPage, self).__init__()
 
-
+    @allure.step('admin main logo visible')
     def main_page_logo_text(self):
         return s(by.xpath(self.LOGO))
 
+    @allure.step('inspect current balance')
     def inspect_current_balance(self):
         my_balance = s(by.xpath(self.BALANCE)).get(query.text)
         if my_balance.startswith('Баланс: -'):
@@ -31,6 +33,7 @@ class MainPage(MainPageLocators):
         else:
             collection_admin.insert_one({'positive_current_balance': my_balance})
 
+    @allure.step('go to mileage data')
     def go_to_car_mileage_data(self):
         s(by.xpath(self.REPORT_PERIOD_BTN)).click().wait_until(s(self.WEEK_PERIOD_SELECT).click())
         s(by.xpath(self.CASCADING_MENU_BTN)).click()

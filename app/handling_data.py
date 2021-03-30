@@ -66,3 +66,5 @@ class StopsCollection(object):
         for document in cursor:
             size_rows = len(document['time_of_stay'])
             return size_rows
+
+

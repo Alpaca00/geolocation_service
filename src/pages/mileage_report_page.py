@@ -1,3 +1,4 @@
+import allure
 from selene.core.wait import Wait
 from selene.support import by
 from selene.support.conditions.be import visible
@@ -25,6 +26,7 @@ class MileageReportPage(MileageReportPageLocators):
         self.driver = config.driver
         self.mileage_collection = MileageCollection()
 
+    @allure.step('admin logo visible')
     def logo_text(self):
         main_tab = self.driver.current_window_handle
         self.tab_analyzer(main_tab)
@@ -37,6 +39,8 @@ class MileageReportPage(MileageReportPageLocators):
                 break
         return self
 
+
+    @allure.step
     def switch_on_report_tab(self):
         main_tab = self.driver.current_window_handle
         self.tab_analyzer(main_tab)
@@ -46,6 +50,7 @@ class MileageReportPage(MileageReportPageLocators):
         self.driver.switch_to.frame(self.driver.find_element_by_tag_name("iframe"))
         return s(by.xpath(self.FRAME_REPORT_TITLE))
 
+    @allure.step('insert document to mileage_collection')
     def insert_data_to_mileage_collection(self):
         tab = self.driver.current_window_handle
         self.tab_analyzer(tab)
@@ -61,6 +66,7 @@ class MileageReportPage(MileageReportPageLocators):
         self.mileage_collection.insert_to_collection(arr)
         return self
 
+    @allure.step('save mileage report to csv file')
     def save_report_to_file(self):
         tab = self.driver.current_window_handle
         self.tab_analyzer(tab)

@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 configparser = "*"
 allure-pytest = "*"
+pytest-rerunfailures = "*"
 
 [dev-packages]
 

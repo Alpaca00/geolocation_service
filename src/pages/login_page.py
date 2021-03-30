@@ -1,3 +1,4 @@
+import allure
 from selene.support.shared.jquery_style import s
 from selene.support.shared import browser, config
 from base_page import BasePage
@@ -12,11 +13,13 @@ class LoginPage(object):
         self.login_btn = s('#lbEnter')
         self.base_page = BasePage()
 
+    @allure.step('open old url')
     def open(self):
         browser.open(f'{self.base_page.base_url}')
         config.driver.maximize_window()
         return self
 
+    @allure.step('login as admin')
     def login_as(self, username, password):
         self.username_input.set_value(username)
         self.password_input.set_value(password)
