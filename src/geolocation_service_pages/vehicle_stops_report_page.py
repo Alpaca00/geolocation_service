@@ -1,24 +1,23 @@
 from datetime import date, timedelta
 import allure
 from selene.api import *
-
 from new_objects.support import DownloadPending
-from src.pages.main_page import MainPageLocators
-from src.pages.mileage_report_page import MileageReportPageLocators, MileageReportPage
-from app.handling_data import StopsCollection
+from src.geolocation_service_pages.main_page import MainPageLocators
+from src.geolocation_service_pages.vehicle_mileage_report_page import VehicleMileageReportPageLocators, VehicleMileageReportPage
+from app.handling_geo_database import VehicleStopsCollection
 
 
-class StopsReportPageLocator(MileageReportPageLocators, MainPageLocators):
+class VehicleStopsReportPageLocator(VehicleMileageReportPageLocators, MainPageLocators):
     DATE_FROM = "//div[@id='fromdate-inputWrap']/input"
     STOPS_REPORT = "//span[@id='menuitem-1401-textEl']"
     REPORT_TABLE_STOPS = "//*[@id='repcontainer']//table//tr"
 
 
-class StopsReportPage(StopsReportPageLocator):
+class VehicleStopsReportPage(VehicleStopsReportPageLocator):
     def __init__(self):
         super().__init__()
         self.driver = config.driver
-        self.mileage_page = MileageReportPage()
+        self.vehicle_mileage_page = VehicleMileageReportPage()
 
     @property
     def generate_start_date(self):
@@ -27,9 +26,8 @@ class StopsReportPage(StopsReportPageLocator):
         start = calc.strftime('%d.%m.%y')
         return start
 
-    @allure.step('go to stops car report')
-    @allure.step('check (input field start date) of report')
-    def go_to_stops_report_page(self):
+    @allure.step
+    def go_to_vehicle_stops_report_page(self):
         s(by.xpath(MainPageLocators.REPORT_PERIOD_BTN)).click().wait_until(
                 s(MainPageLocators.WEEK_PERIOD_SELECT).should(have.exact_text('Текущая неделя')).click())
         s(by.xpath(self.DATE_FROM)).should(be.not_.value(self.generate_start_date)).get(
@@ -42,18 +40,19 @@ class StopsReportPage(StopsReportPageLocator):
         return self
 
     @allure.step
-    def switch_on_stops_car_report_tab(self):
+    def switch_on_vehicle_stops_report_tab(self):
         main_tab = self.driver.current_window_handle
-        self.mileage_page.tab_analyzer(main_tab)
+        self.vehicle_mileage_page.tab_analyzer(main_tab)
         s(by.xpath(self.RADIO_BTN_CONFIRM_OBJECT)).click()
         s(by.xpath(self.DATE_FROM)).should(be.not_.value(self.generate_start_date)).set_value(self.generate_start_date)
         s(by.xpath(self.GENERATE_DATA)).click()
         ss(by.xpath(self.REPORT_TABLE)).should(be.visible, timeout=5)
         self.driver.switch_to.frame(self.driver.find_element_by_tag_name("iframe"))
-        return s(by.xpath(self.FRAME_REPORT_TITLE))
+        return s(by.xpath(self.FRAME_REPORT_TITLE)).element('./span[1]')
 
-    @allure.step('insert document to mileage_collection')
-    def insert_data_to_stops_collection(self):
+
+    @allure.step('insert document to vehicle stops collection')
+    def insert_data_to_vehicle_stops_collection(self):
         rows = browser.all(by.xpath(self.REPORT_TABLE_STOPS)).from_(2)
         start_of_parking = []
         end_of_parking = []
@@ -85,18 +84,18 @@ class StopsReportPage(StopsReportPageLocator):
             elem = row.get(query.text)
             start_of_parking.append(elem)
 
-        StopsCollection().insert_to_collection(start_of_parking, end_of_parking,
-                                               time_of_stay, starting_mileage, ending_mileage, address)
+        VehicleStopsCollection().insert_to_collection(start_of_parking, end_of_parking,
+                                                      time_of_stay, starting_mileage, ending_mileage, address)
         return rows.get(query.size)
 
-    @allure.step('save stops car report to csv file')
+    @allure.step('save vehicle stops report to csv file')
     def save_report_to_file(self):
         main_tab = self.driver.current_window_handle
-        self.mileage_page.tab_analyzer(main_tab)
+        self.vehicle_mileage_page.tab_analyzer(main_tab)
         s(by.xpath(self.RADIO_BTN_CONFIRM_OBJECT)).click()
         s(by.xpath(self.DATE_FROM)).should(be.not_.value(self.generate_start_date)).set_value(self.generate_start_date)
         s(by.xpath(self.GENERATE_DATA)).click()
         ss(by.xpath(self.REPORT_TABLE)).should(be.visible, timeout=5)
         self.driver.switch_to.frame(self.driver.find_element_by_tag_name("iframe"))
-        s(by.xpath(self.mileage_page.CSV_FILE)).click()
+        s(by.xpath(self.vehicle_mileage_page.CSV_FILE)).click()
         DownloadPending(self.driver, timeout=3, rename=True)

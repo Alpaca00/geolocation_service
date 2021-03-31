@@ -1,7 +1,7 @@
 import pytest
 from selene import have
 from src.domain.user import User, Admin
-from src.pages.login_page import LoginPage
+from src.geolocation_service_pages.login_page import LoginPage
 
 
 @pytest.mark.skip()

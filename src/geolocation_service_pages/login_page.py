@@ -2,7 +2,7 @@ import allure
 from selene.support.shared.jquery_style import s
 from selene.support.shared import browser, config
 from base_page import BasePage
-from src.pages.main_page import MainPage
+from src.geolocation_service_pages.main_page import MainPage
 
 
 class LoginPage(object):

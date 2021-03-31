@@ -2,7 +2,7 @@ import allure
 from selene import by, query
 from selene.support.shared.jquery_style import s
 from src.domain.user import collection_admin
-from src.pages.mileage_report_page import MileageReportPage
+from src.geolocation_service_pages.vehicle_mileage_report_page import VehicleMileageReportPage
 
 
 class MainPageLocators:
@@ -25,7 +25,7 @@ class MainPage(MainPageLocators):
     def main_page_logo_text(self):
         return s(by.xpath(self.LOGO))
 
-    @allure.step('inspect current balance')
+    @allure.step('inspect current balance at main page')
     def inspect_current_balance(self):
         my_balance = s(by.xpath(self.BALANCE)).get(query.text)
         if my_balance.startswith('Баланс: -'):
@@ -33,11 +33,11 @@ class MainPage(MainPageLocators):
         else:
             collection_admin.insert_one({'positive_current_balance': my_balance})
 
-    @allure.step('go to mileage data')
-    def go_to_car_mileage_data(self):
+    @allure.step('go to vehicle mileage page')
+    def go_to_vehicle_mileage_page(self):
         s(by.xpath(self.REPORT_PERIOD_BTN)).click().wait_until(s(self.WEEK_PERIOD_SELECT).click())
         s(by.xpath(self.CASCADING_MENU_BTN)).click()
         s(by.xpath(self.REPORTS)).double_click()
         s(by.xpath(self.RIDES_REPORT)).double_click()
         s(by.xpath(self.MILEAGE)).click()
-        return MileageReportPage
+        return VehicleMileageReportPage
