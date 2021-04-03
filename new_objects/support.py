@@ -9,6 +9,8 @@ class OsDownloadsFolderError(Exception):
         return self.txt
 
 
+
+
 class DownloadPending:
     # todo: consider using DownloadPending object under certain conditions ... if you need expect full download or rename the file
     # ... root downloads folder should be "/downloads"
@@ -18,24 +20,27 @@ class DownloadPending:
         self._rename_download_file(rename)
 
     def _check_download(self, timeout):
-        from selenium.common.exceptions import JavascriptException, InvalidArgumentException
         import time
+        from selenium.webdriver.support.wait import WebDriverWait
+        from selenium.common.exceptions import JavascriptException, InvalidArgumentException, TimeoutException
         try:
             if not self.driver.current_url.startswith("chrome://downloads"):
                 self.driver.get("chrome://downloads/")
+                wait = WebDriverWait(self.driver, timeout)
+                wait.until(lambda tab: tab.current_url.startswith("chrome://downloads"))
+                self.driver.set_page_load_timeout(timeout)
                 return self.driver.execute_script("""   
                                                     var items = downloads.Manager.get().items_; 
                                                     if (items.every(e => e.state === "COMPLETE")) 
                                                     return items.map(e => e.fileUrl || e.file_url);
                                                     """)
+        except TimeoutException:
+            return True
         except JavascriptException:
             return False
         except InvalidArgumentException as er:
             return f'{er} ... any browser other than "Chrome" does not work with this method!'
         finally:
-            # time_load = self.driver.execute_script(""" return document.querySelector("body > downloads-manager")
-            #    .shadowRoot.querySelector("#frb0").shadowRoot.querySelector("#description").innerText;""")
-            # timeout = float(time_load[-7:-3]) + 3
             time.sleep(timeout)
 
     #  file is stored in the working directory
@@ -49,7 +54,7 @@ class DownloadPending:
                 file_name_download = self.driver.execute_script("""return document.querySelector("body > downloads-manager")
                 .shadowRoot.querySelector("#frb0").shadowRoot.querySelector("#name").innerText;""")
                 file = os.path.join(os.path.expanduser('~') + "/Downloads/" + str(file_name_download))  # check name folder if you have a different name - change
-                serial_number = datetime.now().strftime("%H_%M_%S")
+                serial_number = datetime.now().strftime("%H_%M")
                 while os.path.isfile(file):
                     if not os.path.isfile(file):
                         raise ValueError(f"{str(file_name_download)} isn't a file!")
@@ -68,4 +73,5 @@ class DownloadPending:
             self.driver.refresh()
         except InvalidArgumentException as er:
             return f'{er} ... any browser other than "Chrome" does not work with this method!'
+
 

@@ -9,6 +9,7 @@ class BasePage(object):
         super(BasePage, self).__init__()
         self.base_url = self.conf.base_url
         self.new_url = self.conf.new_interface_url
+        self.unk_url = self.conf.unk_url
         self.browser = None
 
     def open_new_url(self):

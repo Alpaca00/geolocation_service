@@ -61,7 +61,7 @@ def test_pick_stops_report(login_as_admin):
             VehicleStopsReportPage().go_to_vehicle_stops_report_page().switch_on_vehicle_stops_report_tab().should(
                 have.exact_text('Отчет по стоянкам'))
         except:
-            allure.attach(body=browser.config.driver.get_screenshot_as_png(),
+            allure.attach(body=browser.config_browser.driver.get_screenshot_as_png(),
                           name='screenshot',
                           attachment_type=allure.attachment_type.PNG, extension=(500, 600))
             raise
