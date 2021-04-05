@@ -11,3 +11,4 @@ class Configurator:
         self.base_url = self.config['web_pages']['base_url']
         self.new_interface_url = self.config['web_pages']['new_interface_url']
         self.unk_url = self.config['web_pages']['unk_url']
+        self.bt_url = self.config['web_pages']['bt_url']

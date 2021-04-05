@@ -8,6 +8,7 @@ configparser = "*"
 allure-pytest = "*"
 pytest-rerunfailures = "*"
 openpyxl = "*"
+pdfplumber = "*"
 
 [dev-packages]
 

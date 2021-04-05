@@ -10,13 +10,6 @@ class BasePage(object):
         self.base_url = self.conf.base_url
         self.new_url = self.conf.new_interface_url
         self.unk_url = self.conf.unk_url
+        self.bt_url = self.conf.bt_url
         self.browser = None
 
-    def open_new_url(self):
-        self.browser.open(self.new_url)
-
-    def login_as_user(self):
-        pass
-
-    def quit(self):
-        self.browser.quit()

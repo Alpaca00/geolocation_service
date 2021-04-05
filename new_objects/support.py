@@ -24,6 +24,7 @@ class DownloadPending:
         from selenium.webdriver.support.wait import WebDriverWait
         from selenium.common.exceptions import JavascriptException, InvalidArgumentException, TimeoutException
         try:
+            time.sleep(timeout)
             if not self.driver.current_url.startswith("chrome://downloads"):
                 self.driver.get("chrome://downloads/")
                 wait = WebDriverWait(self.driver, timeout)

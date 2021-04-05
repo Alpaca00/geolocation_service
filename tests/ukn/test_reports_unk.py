@@ -11,7 +11,7 @@ def test_set_parameters_rides_report(login_as_admin_unk):
 @pytest.mark.skip()
 def test_save_rides_report_to_excel_file(login_as_admin_unk):
     (MainPage().go_to_rides_page().set_parameters_of_rides_report()
-     .save_rides_report_to_excel_file())
+     .save_rides_report_to_csv_file())
     FirstServiceDatabase().insert_document_rides_to_collection()
 
 
