@@ -1,4 +1,8 @@
 from selene.api import *
+from selenium import webdriver
+from selene import Browser, Config
+from fake_useragent import UserAgent
+from selenium.webdriver.chrome.options import Options
 from base_page import BasePage
 from src.bt_service_pages.main_page_and_menu_pages import MainPage
 
@@ -15,6 +19,20 @@ class LoginPage(LoginPageLocators):
         self.base_page = BasePage()
 
     def open(self):
+        # user_agent = UserAgent()
+        options = Options()
+        # options.add_argument(f"user-agent={user_agent.random}")
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        prefs = {"profile.default_content_settings.popups": 0, "download.prompt_for_download": "false",
+                 "download.directory_upgrade": "true", "download.default_directory": "/home/seluser/downloads"}
+        options.add_experimental_option("prefs", prefs)
+        browser.set_driver(webdriver.Remote("http://localhost:4444/wd/hub", desired_capabilities={
+                'browserName': 'firefox',
+                'platform': 'linux',
+                }
+            , options=options))
+        config.timeout = 4
         browser.open(self.base_page.bt_url)
         return self
 

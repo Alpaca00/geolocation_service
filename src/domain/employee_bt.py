@@ -56,3 +56,15 @@ class Employee:
         query = collection_admin.find({'_id': ObjectId('60698983b4e6808bf0c07eff')}, {'_id': 0})
         for item in query:
             return item['payments_title']
+
+    @property
+    def find_acquiring_page_title(self):
+        query = collection_admin.find({'_id': ObjectId('606abd2ca4d1383cb4d2c2e3')}, {'_id': 0})
+        for item in query:
+            return item['acquiring_title']
+
+    @property
+    def token(self):
+        query = collection_admin.find({'_id': ObjectId('606ac374a4d1383cb4d2c2e4')}, {'_id': 0})
+        for item in query:
+            return item['token']

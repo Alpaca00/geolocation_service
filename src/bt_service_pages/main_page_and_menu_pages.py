@@ -1,8 +1,9 @@
 import csv
+import time
 
 from selene.api import *
 from selene.core.exceptions import ConditionNotMatchedError
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoAlertPresentException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from new_objects.support import DownloadPending
@@ -63,6 +64,17 @@ class MainPage(MainPageLocator):
 
     def log_out_of_account(self):
         s(by.xpath(self.EXIT_BTN)).double_click()
+        self.confirm_exit()
+
+    def confirm_exit(self):
+        try:
+            WebDriverWait(self.driver, 5).until(EC.alert_is_present())
+            alert = self.driver.switch_to_alert()
+            alert.accept()
+        except TimeoutException:
+            return True
+        except NoAlertPresentException:
+            return True
 
 
 class RidesPage(MainPage):
@@ -70,8 +82,8 @@ class RidesPage(MainPage):
     def save_rides_report_to_csv_file(self):
         s(by.xpath(self.RIDES_BTN)).click()
         s(by.xpath(self.RIDES_DOWNLOADS_CSV)).click()
-        DownloadPending(self.driver, timeout=3, rename=True)
-        self.driver.back()
+        #DownloadPending(self.driver, timeout=3, rename=True)
+        time.sleep(5)
 
 
 class BillsPage(MainPage):
@@ -80,7 +92,6 @@ class BillsPage(MainPage):
         s(by.xpath(self.BILLS_BTN)).click()
         s(by.xpath(self.BILLS_PDF)).double_click()
         DownloadPending(self.driver, timeout=3, rename=True)
-        self.driver.back()
 
 
 class CompensationPage(MainPage):

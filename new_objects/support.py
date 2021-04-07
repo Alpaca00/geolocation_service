@@ -55,6 +55,7 @@ class DownloadPending:
                 file_name_download = self.driver.execute_script("""return document.querySelector("body > downloads-manager")
                 .shadowRoot.querySelector("#frb0").shadowRoot.querySelector("#name").innerText;""")
                 file = os.path.join(os.path.expanduser('~') + "/Downloads/" + str(file_name_download))  # check name folder if you have a different name - change
+                #file = os.path.join("/dev/shm/" + str(file_name_download))  # if run docker-selenium
                 serial_number = datetime.now().strftime("%H_%M")
                 while os.path.isfile(file):
                     if not os.path.isfile(file):

@@ -9,6 +9,8 @@ allure-pytest = "*"
 pytest-rerunfailures = "*"
 openpyxl = "*"
 pdfplumber = "*"
+pytest-reportportal = "*"
+fake-useragent = "*"
 
 [dev-packages]
 
