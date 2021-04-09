@@ -5,7 +5,7 @@ services:
     image: selenium/node-chrome:4.0.0-beta-3-prerelease-20210402
     volumes:
       - /dev/shm:/dev/shm
-      - /home/seluser/downloads
+      - /home/seluser/downloads:/home/seluser/downloads/
     depends_on:
       - selenium-hub
     environment:
@@ -14,6 +14,7 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     ports:
       - "6900:5900"
+      - "7900:7900"
 
   edge:
     image: selenium/node-edge:4.0.0-beta-3-prerelease-20210402
@@ -40,7 +41,6 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     ports:
       - "6902:5900"
-      - "7900:7900"
 
   opera:
     image: selenium/node-opera:4.0.0-beta-3-prerelease-20210402

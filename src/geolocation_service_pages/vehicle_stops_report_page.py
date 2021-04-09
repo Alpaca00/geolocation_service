@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 import allure
 from selene.api import *
-from new_objects.support import DownloadPending
+from utils.support import DownloadPending
 from src.geolocation_service_pages.main_page import MainPageLocators
 from src.geolocation_service_pages.vehicle_mileage_report_page import VehicleMileageReportPageLocators, VehicleMileageReportPage
 from app.handling_geo_database import VehicleStopsCollection

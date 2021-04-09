@@ -1,4 +1,5 @@
-FROM selenium/hub:4.0.0-beta-3-prerelease-20210402
+FROM selenium/node-chrome:4.0.0-beta-3-prerelease-20210402
 
-RUN mkdir /home/seluser/downloads
+RUN chmod -R 777 /dev/shm
+
 

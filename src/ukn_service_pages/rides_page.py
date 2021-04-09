@@ -1,5 +1,5 @@
 from selene.api import *
-from new_objects.support import DownloadPending
+from utils.support import DownloadPending
 from src.domain.employee_ukn import Employee
 
 

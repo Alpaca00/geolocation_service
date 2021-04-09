@@ -6,7 +6,7 @@ from selene.support.shared import config
 from selene.support.shared.jquery_style import s
 from selene.api import *
 from app.handling_geo_database import VehicleMileageCollection
-from new_objects.support import DownloadPending
+from utils.support import DownloadPending
 
 
 class VehicleMileageReportPageLocators:

@@ -13,8 +13,8 @@ class SecondServiceDatabase(object):
 
     def __init__(self):
         self.file_rides = f"/home/oleg/python/geolocation_service/new_file_{datetime.now().strftime('%H_%M')}.csv"
-        #self.file_rides = f"/dev/shm/new_file_{datetime.now().strftime('%H_%M')}.csv"
-        self.file_payments = f"/home/oleg/python/geolocation_service/new_file_{datetime.now().strftime('%H_%M')}.pdf"
+        self.file_rides = f"/dev/shm/new_file_{datetime.now().strftime('%H_%M')}.csv"
+        #self.file_payments = f"/home/oleg/python/geolocation_service/new_file_{datetime.now().strftime('%H_%M')}.pdf"
 
     def insert_document_to_rides_collection(self):
         try:

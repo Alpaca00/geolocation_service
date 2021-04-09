@@ -17,8 +17,9 @@ class TestGetReportsBT(object):
     def test_save_rides_report_to_csv_file(self, login_as_employee):
         MainPage().go_to_rides_page().at_page(self.EMPLOYEE.find_rides_page_title)
         RidesPage().save_rides_report_to_csv_file()
-        #SecondServiceDatabase().insert_document_to_rides_collection()
-        #MainPage().log_out_of_account()
+        MainPage().log_out_of_account()
+        SecondServiceDatabase().insert_document_to_rides_collection()
+
 
     @pytest.mark.skip()
     def test_save_bills_report_to_pdf_file(self, login_as_employee):

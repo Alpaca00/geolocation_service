@@ -6,7 +6,7 @@ from selene.core.exceptions import ConditionNotMatchedError
 from selenium.common.exceptions import TimeoutException, NoAlertPresentException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from new_objects.support import DownloadPending
+from utils.support import DownloadPending
 
 
 class MainPageLocator:
@@ -82,8 +82,8 @@ class RidesPage(MainPage):
     def save_rides_report_to_csv_file(self):
         s(by.xpath(self.RIDES_BTN)).click()
         s(by.xpath(self.RIDES_DOWNLOADS_CSV)).click()
-        #DownloadPending(self.driver, timeout=3, rename=True)
-        time.sleep(5)
+        DownloadPending(self.driver, timeout=3, rename=False)
+
 
 
 class BillsPage(MainPage):

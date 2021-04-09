@@ -1,7 +1,7 @@
 from selene.api import *
 from selenium.common.exceptions import ElementNotInteractableException
 from selenium.webdriver import ActionChains
-from new_objects.support import DownloadPending
+from utils.support import DownloadPending
 from src.domain.employee_ukn import Employee
 
 

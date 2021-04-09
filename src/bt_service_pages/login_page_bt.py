@@ -20,15 +20,16 @@ class LoginPage(LoginPageLocators):
 
     def open(self):
         # user_agent = UserAgent()
-        options = Options()
         # options.add_argument(f"user-agent={user_agent.random}")
-        options.add_argument("--headless")
-        options.add_argument("--no-sandbox")
-        prefs = {"profile.default_content_settings.popups": 0, "download.prompt_for_download": "false",
-                 "download.directory_upgrade": "true", "download.default_directory": "/home/seluser/downloads"}
+        options = Options()
+        prefs = {
+            'download.default_directory': '/dev/shm/',
+            'download.prompt_for_download': False,
+            'download.directory_upgrade': True
+         }
         options.add_experimental_option("prefs", prefs)
         browser.set_driver(webdriver.Remote("http://localhost:4444/wd/hub", desired_capabilities={
-                'browserName': 'firefox',
+                'browserName': 'chrome',
                 'platform': 'linux',
                 }
             , options=options))
@@ -39,6 +40,7 @@ class LoginPage(LoginPageLocators):
     def at_login_page(self):
         locator = ss(by.xpath(self.EMAIL))
         return len(locator) > 0
+
 
     def login_as(self, email, password):
         if self.at_login_page():
